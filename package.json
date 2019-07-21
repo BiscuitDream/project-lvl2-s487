@@ -1,0 +1,23 @@
+{
+  "name": "gendiff-b",
+  "version": "1.0.0",
+  "description": "Hexlet project lvl 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BiscuitDream/project-lvl2-s487.git"
+  },
+  "keywords": [
+    "hexlet",
+    "project"
+  ],
+  "author": "Igor Pechenkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BiscuitDream/project-lvl2-s487/issues"
+  },
+  "homepage": "https://github.com/BiscuitDream/project-lvl2-s487#readme"
+}
