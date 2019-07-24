@@ -3,10 +3,14 @@
   "version": "0.0.1",
   "description": "Hexlet project lvl 2",
   "main": "index.js",
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clear": "rm -rf dist",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run clear && npm run build"
   },
   "repository": {
     "type": "git",
