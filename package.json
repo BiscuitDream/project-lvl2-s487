@@ -24,5 +24,11 @@
   "homepage": "https://github.com/BiscuitDream/project-lvl2-s487#readme",
   "files": [
     "dist"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5"
+  }
 }
