@@ -6,6 +6,9 @@
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clear": "rm -rf dist",
@@ -26,9 +29,6 @@
     "url": "https://github.com/BiscuitDream/project-lvl2-s487/issues"
   },
   "homepage": "https://github.com/BiscuitDream/project-lvl2-s487#readme",
-  "files": [
-    "dist"
-  ],
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
