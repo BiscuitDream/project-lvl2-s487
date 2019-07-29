@@ -1,19 +1,19 @@
 // https://github.com/evanw/node-source-map-support пакет для поддержки нодой node source map
 
-import program from 'commander';
+// import program from 'commander';
 
-program
-  .version('0.0.1')
-  .description('Compares two configuration files and shows a difference.')
-  .arguments('<firstConfig> <secondConfig>')
-  .option('-f, --format [type]', 'Output format')
-  .parse(process.argv);
+// program
+//   .version('0.0.1')
+//   .description('Compares two configuration files and shows a difference.')
+//   .arguments('<firstConfig> <secondConfig>')
+//   .option('-f, --format [type]', 'Output format')
+//   .parse(process.argv);
 
 
-if (!program.args.length) program.help();
+// if (!program.args.length) program.help();
 
-const gendiff = () => {
-  console.log('It\'s work!!');
-};
+// const gendiff = () => {
+//   console.log('It\'s work!!');
+// };
 
-export default gendiff;
+// export default gendiff;
