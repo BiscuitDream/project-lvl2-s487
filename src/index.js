@@ -4,11 +4,13 @@ import program from 'commander';
 
 program
   .version('0.0.1')
-  .arguments('<firstConfig> <secondConfig>')
   .description('Compares two configuration files and shows a difference.')
-  .option('-f, --format [type]', 'Output format');
+  .arguments('<firstConfig> <secondConfig>')
+  .option('-f, --format [type]', 'Output format')
+  .parse(process.argv);
 
-program.parse(process.argv);
+
+if (!program.args.length) program.help();
 
 const gendiff = () => {
   console.log('It\'s work!!');
