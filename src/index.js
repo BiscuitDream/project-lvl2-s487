@@ -17,3 +17,16 @@
 // };
 
 // export default gendiff;
+
+
+// const genDiff = (filepath1, filepath2) => {
+//   const fileData1 = JSON.parse(fs.readFileSync(filepath1), 'utf-8');
+//   const fileData2 = JSON.parse(fs.readFileSync(filepath2), 'utf-8');
+//   return getDiff(fileData1, fileData2);
+// };
+
+// export default genDiff;
+
+const genDiff = () => {};
+
+export default genDiff;
