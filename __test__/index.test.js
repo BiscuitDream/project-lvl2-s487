@@ -1,6 +1,9 @@
-import reverse from '../src';
+import genDiff from '../src';
 
-test('reverse', () => {
-  expect(reverse('hello')).toEqual('olleh');
-  expect(reverse('')).toEqual('');
-});
+
+// import reverse from '../src';
+
+// test('reverse', () => {
+//   expect(reverse('hello')).toEqual('olleh');
+//   expect(reverse('')).toEqual('');
+// });
