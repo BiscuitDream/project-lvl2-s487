@@ -1,9 +1,7 @@
+import fs from 'fs';
 import genDiff from '../src';
 
-
-// import reverse from '../src';
-
-// test('reverse', () => {
-//   expect(reverse('hello')).toEqual('olleh');
-//   expect(reverse('')).toEqual('');
-// });
+test('genDiff json', () => {
+  const result = fs.readFileSync(`${__dirname}/__fixtures__/result-json.txt`, 'utf-8');
+  expect(genDiff(`${__dirname}/__fixtures__/before.json`, `${__dirname}/__fixtures__/after.json`)).toEqual(result);
+});
