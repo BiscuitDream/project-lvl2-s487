@@ -6,12 +6,18 @@
 // console.log(diff);
 
 
+// Сделать безразличие к порядку строк в выводе
+
+
 import fs from 'fs';
 // import _ from 'lodash';
 
 const getDiff = (file1, file2) => {
   const file1Keys = Object.keys(file1);
   const file2Keys = Object.keys(file2);
+
+  // const testKeys = _.union(file1Keys, file2Keys);
+  // console.log('testKeys :', testKeys);
 
   const diff1 = file1Keys.reduce((acc, key) => {
     if (file2Keys.includes(key)) {
@@ -34,19 +40,19 @@ const getDiff = (file1, file2) => {
 
   // console.log(diff1);
   // console.log(diff2);
-  console.log(diff);
+  // console.log(diff);
 
   return diff;
 };
 
-const genDiff = (pathToFile1, pathToFile2) => {
-  const file1 = fs.readFileSync(pathToFile1, 'utf-8');
-  const parsedFile1 = JSON.parse(file1);
+const genDiff = (filePath1, filePath2) => {
+  const fileContent1 = fs.readFileSync(filePath1, 'utf-8');
+  const fileData1 = JSON.parse(fileContent1);
 
-  const file2 = fs.readFileSync(pathToFile2, 'utf-8');
-  const parsedFile2 = JSON.parse(file2);
+  const fileContent2 = fs.readFileSync(filePath2, 'utf-8');
+  const fileData2 = JSON.parse(fileContent2);
 
-  return getDiff(parsedFile1, parsedFile2);
+  return getDiff(fileData1, fileData2);
 
   // console.log('file1 :', file1);
   // console.log('typeof file1:', typeof file1);
