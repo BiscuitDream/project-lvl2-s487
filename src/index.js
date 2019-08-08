@@ -53,20 +53,6 @@ const genDiff = (filePath1, filePath2) => {
   const fileData2 = JSON.parse(fileContent2);
 
   return getDiff(fileData1, fileData2);
-
-  // console.log('file1 :', file1);
-  // console.log('typeof file1:', typeof file1);
-  // console.log();
-  // console.log('parsedFile1 :', parsedFile1);
-  // console.log('typeof parsedFile1 :', typeof parsedFile1);
-  // console.log();
-  // console.log('====================');
-
-  // console.log('file2 :', file2);
-  // console.log('typeof file2:', typeof file2);
-  // console.log();
-  // console.log('parsedFile2 :', parsedFile2);
-  // console.log('typeof parsedFile2 :', typeof parsedFile2);
 };
 
 export default genDiff;
