@@ -7,32 +7,54 @@ import fs from 'fs';
 const getDiff = (data1, data2) => {
   const data1Keys = Object.keys(data1);
   const data2Keys = Object.keys(data2);
+  const dataKeys = [...(new Set(data1Keys.concat(data2Keys)))];
 
-  // const testKeys = _.union(file1Keys, file2Keys);
-  // console.log('testKeys :', testKeys);
+  // console.log('data1Keys :', data1Keys);
+  // console.log('data2Keys :', data2Keys);
+  // console.log('dataKeys :', dataKeys);
 
-  const diff1 = data1Keys.reduce((acc, key) => {
-    if (data2Keys.includes(key)) {
+  const rawDiff = dataKeys.reduce((acc, key) => {
+    if (data1Keys.includes(key) && data2Keys.includes(key)) {
       if (data1[key] === data2[key]) {
         return `${acc}    ${key}: ${data1[key]}\n`;
       }
       return `${acc}  + ${key}: ${data2[key]}\n  - ${key}: ${data1[key]}\n`;
     }
+    if (!data1Keys.includes(key)) {
+      return `${acc}  + ${key}: ${data2[key]}\n`;
+    }
     return `${acc}  - ${key}: ${data1[key]}\n`;
   }, '');
+  // console.log(rawDiff);
 
-  const diff2 = data2Keys.reduce((acc, key) => {
-    if (!data1Keys.includes(key)) {
-      return `${acc}  + ${key}: ${data2[key]}`;
-    }
-    return acc;
-  }, diff1);
+  const diff = `{\n${rawDiff}}`;
 
-  const diff = `{\n${diff2}\n}`;
+  // const testKeys = _.union(file1Keys, file2Keys);
+  // console.log('testKeys :', testKeys);
+
+  // const diff1 = data1Keys.reduce((acc, key) => {
+  //   if (data2Keys.includes(key)) {
+  //     if (data1[key] === data2[key]) {
+  //       return `${acc}    ${key}: ${data1[key]}\n`;
+  //     }
+  //     return `${acc}  + ${key}: ${data2[key]}\n  - ${key}: ${data1[key]}\n`;
+  //   }
+  //   return `${acc}  - ${key}: ${data1[key]}\n`;
+  // }, '');
+
+  // const diff2 = data2Keys.reduce((acc, key) => {
+  //   if (!data1Keys.includes(key)) {
+  //     return `${acc}  + ${key}: ${data2[key]}\n`;
+  //   }
+  //   return acc;
+  // }, diff1);
 
   // console.log(diff1);
   // console.log(diff2);
   // console.log(diff);
+
+
+  // const diff = `{\n${diff2}}`;
 
   return diff;
 };
