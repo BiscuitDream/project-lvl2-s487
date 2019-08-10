@@ -1,6 +1,6 @@
 {
-  "name": "gendiff-b",
-  "version": "0.0.2",
+  "name": "gendiff",
+  "version": "0.0.3",
   "description": "Hexlet project lvl 2",
   "main": "dist/index.js",
   "bin": {
