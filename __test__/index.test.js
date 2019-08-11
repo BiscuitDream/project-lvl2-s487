@@ -12,3 +12,13 @@ test('genDiff flat json', () => {
 
   expect(genDiff(beforePath, afterPath)).toEqual(result);
 });
+
+test('genDiff flat yaml', () => {
+  const resultPath = `${__dirname}/__fixtures__/result-yaml.txt`;
+  const result = fs.readFileSync(resultPath, 'utf-8').trim();
+
+  const beforePath = `${__dirname}/__fixtures__/before.yml`;
+  const afterPath = `${__dirname}/__fixtures__/after.yml`;
+
+  expect(genDiff(beforePath, afterPath)).toEqual(result);
+});
