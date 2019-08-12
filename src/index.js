@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import yaml from 'js-yaml';
+import parse from './parsers';
 // import _ from 'lodash';
 
 const getDiff = (data1, data2) => {
@@ -29,14 +29,6 @@ const getDiff = (data1, data2) => {
   return diff;
 };
 
-// Вибирается функция-парсер в зависимости от расширения файла
-const parse = (content, ext) => {
-  if (ext === 'json') {
-    return JSON.parse(content);
-  }
-  return yaml.safeLoad(content, 'utf-8');
-};
-
 const genDiff = (file1Path, file2Path) => {
   const file1Ext = path.extname(file1Path);
   const file1Content = fs.readFileSync(file1Path, 'utf-8');
@@ -53,3 +45,6 @@ const genDiff = (file1Path, file2Path) => {
 };
 
 export default genDiff;
+
+
+// Полиморфизм на основе объекта
