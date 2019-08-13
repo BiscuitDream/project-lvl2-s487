@@ -28,18 +28,17 @@ const getDiff = (data1, data2) => {
   return diff;
 };
 
+const getDataByPathToFile = (pathToFile) => {
+  const extension = path.extname(pathToFile);
+  const parser = getParse(extension);
+  const content = fs.readFileSync(pathToFile, 'utf-8');
+  const data = parser(content);
+  return data;
+};
 
-// убрать дулирование при чтении файлов. нужна общая фнкция под это
 const genDiff = (file1Path, file2Path) => {
-  const file1Ext = path.extname(file1Path);
-  const file1Parser = getParse(file1Ext);
-  const file1Content = fs.readFileSync(file1Path, 'utf-8');
-  const file1Data = file1Parser(file1Content);
-
-  const file2Ext = path.extname(file2Path);
-  const file2Parser = getParse(file2Ext);
-  const file2Content = fs.readFileSync(file2Path, 'utf-8');
-  const file2Data = file2Parser(file2Content);
+  const file1Data = getDataByPathToFile(file1Path);
+  const file2Data = getDataByPathToFile(file2Path);
 
   const diff = getDiff(file1Data, file2Data);
   return diff;
