@@ -4,7 +4,6 @@
 import fs from 'fs';
 import path from 'path';
 import getParse from './parsers';
-// import _ from 'lodash';
 
 const getDiff = (data1, data2) => {
   const data1Keys = Object.keys(data1);
@@ -29,6 +28,8 @@ const getDiff = (data1, data2) => {
   return diff;
 };
 
+
+// убрать дулирование при чтении файлов. нужна общая фнкция под это
 const genDiff = (file1Path, file2Path) => {
   const file1Ext = path.extname(file1Path);
   const file1Parser = getParse(file1Ext);

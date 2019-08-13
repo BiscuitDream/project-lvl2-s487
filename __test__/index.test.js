@@ -1,5 +1,4 @@
 import fs from 'fs';
-// import path from 'path';
 import genDiff from '../src';
 
 test('genDiff flat json', () => {
