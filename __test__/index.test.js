@@ -22,3 +22,13 @@ test('genDiff flat yaml', () => {
 
   expect(genDiff(beforePath, afterPath)).toEqual(result);
 });
+
+test('genDiff flat ini', () => {
+  const resultPath = `${__dirname}/__fixtures__/result-ini.txt`;
+  const result = fs.readFileSync(resultPath, 'utf-8').trim();
+
+  const beforePath = `${__dirname}/__fixtures__/before.ini`;
+  const afterPath = `${__dirname}/__fixtures__/after.ini`;
+
+  expect(genDiff(beforePath, afterPath)).toEqual(result);
+});
