@@ -1,11 +1,13 @@
 import yaml from 'js-yaml';
 
-// Вибирается функция-парсер в зависимости от расширения файла
-const parse = (content, ext) => {
-  if (ext === 'json') {
-    return JSON.parse(content);
+const getParse = (extension) => {
+  if (extension === 'json') {
+    return JSON.parse;
   }
-  return yaml.safeLoad(content, 'utf-8');
+  return yaml.safeLoad;
 };
 
-export default parse;
+export default getParse;
+
+
+// Полиморфизм на основе объекта

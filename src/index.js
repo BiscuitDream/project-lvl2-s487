@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import parse from './parsers';
+import getParse from './parsers';
 // import _ from 'lodash';
 
 const getDiff = (data1, data2) => {
@@ -31,20 +31,17 @@ const getDiff = (data1, data2) => {
 
 const genDiff = (file1Path, file2Path) => {
   const file1Ext = path.extname(file1Path);
+  const file1Parser = getParse(file1Ext);
   const file1Content = fs.readFileSync(file1Path, 'utf-8');
-  const file1Data = parse(file1Content, file1Ext);
-  // const file1Data = JSON.parse(file1Content);
+  const file1Data = file1Parser(file1Content);
 
   const file2Ext = path.extname(file2Path);
+  const file2Parser = getParse(file2Ext);
   const file2Content = fs.readFileSync(file2Path, 'utf-8');
-  const file2Data = parse(file2Content, file2Ext);
-  // const file2Data = JSON.parse(file2Content);
+  const file2Data = file2Parser(file2Content);
 
   const diff = getDiff(file1Data, file2Data);
   return diff;
 };
 
 export default genDiff;
-
-
-// Полиморфизм на основе объекта
