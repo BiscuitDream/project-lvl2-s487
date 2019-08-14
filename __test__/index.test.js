@@ -34,9 +34,9 @@ import genDiff from '../src';
 // });
 
 const filesForTest = [
-  ['before.json', 'after.json', 'expected-json.txt'],
-  ['before.yml', 'after.yml', 'expected-yaml.txt'],
-  ['before.ini', 'after.ini', 'expected-ini.txt'],
+  ['before.json', 'after.json', 'expected-flat.txt'],
+  ['before.yml', 'after.yml', 'expected-flat.txt'],
+  ['before.ini', 'after.ini', 'expected-flat.txt'],
 ];
 
 test.each(filesForTest)(
