@@ -34,20 +34,20 @@ import genDiff from '../src';
 // });
 
 const filesForTest = [
-  ['before.json', 'after.json', 'result-json.txt'],
-  ['before.yml', 'after.yml', 'result-yaml.txt'],
-  ['before.ini', 'after.ini', 'result-ini.txt'],
+  ['before.json', 'after.json', 'expected-json.txt'],
+  ['before.yml', 'after.yml', 'expected-yaml.txt'],
+  ['before.ini', 'after.ini', 'expected-ini.txt'],
 ];
 
 test.each(filesForTest)(
   'getDiff(%s, %s)',
-  (beforeFile, afterFile, resultFile) => {
-    const resultPath = `${__dirname}/__fixtures__/${resultFile}`;
-    const result = fs.readFileSync(resultPath, 'utf-8').trim();
+  (beforeFile, afterFile, expectedFile) => {
+    const expectedPath = `${__dirname}/__fixtures__/${expectedFile}`;
+    const expected = fs.readFileSync(expectedPath, 'utf-8').trim();
 
     const beforePath = `${__dirname}/__fixtures__/${beforeFile}`;
     const afterPath = `${__dirname}/__fixtures__/${afterFile}`;
 
-    expect(genDiff(beforePath, afterPath)).toEqual(result);
+    expect(genDiff(beforePath, afterPath)).toEqual(expected);
   },
 );
