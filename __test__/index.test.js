@@ -40,7 +40,7 @@ const filesForTest = [
 ];
 
 test.each(filesForTest)(
-  'compare %s and %s',
+  'getDiff(%s, %s)',
   (beforeFile, afterFile, resultFile) => {
     const resultPath = `${__dirname}/__fixtures__/${resultFile}`;
     const result = fs.readFileSync(resultPath, 'utf-8').trim();
