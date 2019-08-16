@@ -1,6 +1,5 @@
 // https://github.com/evanw/node-source-map-support пакет для поддержки нодой node source map
 
-
 import fs from 'fs';
 import path from 'path';
 import getParse from './parsers';
@@ -38,7 +37,11 @@ const getDataByPathToFile = (pathToFile) => {
 
 const genDiff = (file1Path, file2Path) => {
   const file1Data = getDataByPathToFile(file1Path);
+  // console.log('file1Data');
+  // console.log(file1Data);
   const file2Data = getDataByPathToFile(file2Path);
+  // console.log('file2Data');
+  // console.log(file2Data);
 
   const diff = getDiff(file1Data, file2Data);
   return diff;

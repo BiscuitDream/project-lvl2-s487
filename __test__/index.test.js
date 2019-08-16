@@ -5,6 +5,9 @@ const filesForTest = [
   ['before.json', 'after.json', 'expected-flat.txt'],
   ['before.yml', 'after.yml', 'expected-flat.txt'],
   ['before.ini', 'after.ini', 'expected-flat.txt'],
+  ['before-recursive.json', 'after-recursive.json', 'expected-recursive.txt'],
+  ['before-recursive.yml', 'after-recursive.yml', 'expected-recursive.txt'],
+  ['before-recursive.ini', 'after-recursive.ini', 'expected-recursive.txt'],
 ];
 
 test.each(filesForTest)(
