@@ -23,3 +23,6 @@ export default getParse;
 //   }
 //   return parserSource[type];
 // };
+
+
+// Звездочки * в шаблонном проекте!!!
