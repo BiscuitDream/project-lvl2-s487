@@ -71,26 +71,41 @@ import getParse from './parsers';
 // };
 // type: changed, added, deleted
 
-// Что делать с отступами в функции, которая рендерит строку ? Как - то рекурсивно их увеличивать ? что - то подзавис на этом месте
-// Kirill Mokevnin
-// 28 августа 2018
-// Именно.Отслеживай глубину.
-
 
 // ////////////////////////////
-// iter процесс с аккумулятором
-const buildAst = (data1, data2) => {
-  const data1Keys = Object.keys(data1);
-  const data2Keys = Object.keys(data2);
-  const dataKeys = [...(new Set(data1Keys.concat(data2Keys)))];
+const buildAst = (file1Data, file2Data) => {
+  const iter = (data1, data2) => {
+    const data1Keys = Object.keys(data1);
+    const data2Keys = Object.keys(data2);
+    const dataKeys = [...(new Set(data1Keys.concat(data2Keys)))];
 
-  const childrenList = dataKeys.reduce((acc, key) => {
-    if (data1Keys.includes(key) && data2Keys.includes(key)) {
-      if (data1[key] === data2[key]) {
+    const childrenList = dataKeys.reduce((acc, key) => {
+      if (data1Keys.includes(key) && data2Keys.includes(key)) {
+        if (typeof data1[key] === 'object' && typeof data2[key] === 'object') {
+          const elem = {
+            name: key,
+            type: 'parametresList',
+            children: iter(data1[key], data2[key]),
+          };
+          return [...acc, elem];
+        }
+
+        if (data1[key] === data2[key]) {
+          const elem = {
+            name: key,
+            type: 'parametre',
+            status: 'not changed',
+            valueOld: data1[key],
+            valueNew: data2[key],
+            children: [],
+          };
+          return [...acc, elem];
+        }
+
         const elem = {
-          type: 'parametre',
           name: key,
-          status: 'not changed',
+          type: 'parametre',
+          status: 'changed',
           valueOld: data1[key],
           valueNew: data2[key],
           children: [],
@@ -98,41 +113,40 @@ const buildAst = (data1, data2) => {
         return [...acc, elem];
       }
 
+      if (!data1Keys.includes(key)) {
+        const elem = {
+          name: key,
+          type: 'parametre',
+          status: 'added',
+          valueOld: null, // maybe undefined
+          valueNew: data2[key],
+          children: [],
+        };
+        return [...acc, elem];
+      }
+
       const elem = {
-        type: 'parametre',
         name: key,
-        status: 'changed',
+        type: 'parametre',
+        status: 'deleted',
         valueOld: data1[key],
-        valueNew: data2[key],
+        valueNew: null, // maybe undefined
         children: [],
       };
       return [...acc, elem];
-    }
+    }, []);
 
-    if (!data1Keys.includes(key)) {
-      const elem = {
-        type: 'parametre',
-        name: key,
-        status: 'added',
-        valueOld: undefined, // maybe null
-        valueNew: data2[key],
-        children: [],
-      };
-      return [...acc, elem];
-    }
+    // const ast = childrenList.length > 0
+    //   ? { type: 'parametresList', children: childrenList } : {};
+    // return ast;
+    return childrenList;
+  };
 
-    const elem = {
-      type: 'parametre',
-      name: key,
-      status: 'deleted',
-      valueOld: data1[key],
-      valueNew: undefined, // maybe null
-      children: [],
-    };
-    return [...acc, elem];
-  }, []);
-
-  const ast = childrenList.length > 0 ? { type: 'parametresList', children: childrenList } : {};
+  const ast = {
+    type: 'parametresList',
+    children: iter(file1Data, file2Data),
+  };
+  // return iter(file1Data, file2Data);
   return ast;
 };
 // //////////////////////
@@ -176,8 +190,8 @@ const genDiff = (file1Path, file2Path) => {
   const file2Data = getDataByPathToFile(file2Path);
   // console.log('file2Data');
   // console.log(file2Data);
-  console.log('ast!!!!!!!!!!!!!!!!!');
-  console.log(buildAst(file1Data, file2Data));
+  // console.log('ast!!!!!!!!!!!!!!!!!');
+  // console.log(JSON.stringify(buildAst(file1Data, file2Data), null, 2));
 
   const diff = getDiff(file1Data, file2Data);
   return diff;
