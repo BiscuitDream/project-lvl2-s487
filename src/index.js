@@ -150,7 +150,46 @@ const buildAst = (file1Data, file2Data) => {
   return ast;
 };
 // //////////////////////
+// ========================
+const parseAst = (ast) => {
+  const iter = (elem) => {
+    // const spaces = '  '.repeat(depth);
+    if (elem.type === 'parametre') {
+      if (elem.status === 'not changed') {
+        return `  ${elem.name}: ${elem.valueNew}`;
+      }
+      if (elem.status === 'added') {
+        return `+ ${elem.name}: ${elem.valueNew}`;
+      }
+      if (elem.status === 'deleted') {
+        return `- ${elem.name}: ${elem.valueOld}`;
+      }
+      if (elem.status === 'changed') {
+        return `+ ${elem.name}: ${elem.valueNew}\n- ${elem.name}: ${elem.valueOld}`;
+      }
+    }
+    return `${elem.children.map(iter).join('\n')}`;
+  };
 
+  return `{\n${iter(ast)}\n}`;
+};
+// =================
+// Обрабатываем AST
+// const iterAst = (ast) => {
+//   switch (ast.type) {
+//     case 'tagsList':
+//       return `${ast.body.map(iterAst).join('')}`;
+//     case 'tag':
+//       const attrsLine = Object.keys(ast.options).reduce(
+//         (acc, key) => `${acc} ${key}="${ast.options[key]}"`,
+//         '',
+//       );
+//       return `<${ast.name$}${attrsLine}>${iterAst(ast.body)}</${ast.name}>`;
+//     default:
+//       return ast;
+//       // nothing
+//   }
+// };
 
 const getDiff = (data1, data2) => {
   const data1Keys = Object.keys(data1);
@@ -190,8 +229,11 @@ const genDiff = (file1Path, file2Path) => {
   const file2Data = getDataByPathToFile(file2Path);
   // console.log('file2Data');
   // console.log(file2Data);
-  // console.log('ast!!!!!!!!!!!!!!!!!');
-  // console.log(JSON.stringify(buildAst(file1Data, file2Data), null, 2));
+  console.log('!!!!AST!!!!!!!');
+  const ast = buildAst(file1Data, file2Data);
+  console.log(JSON.stringify(ast, null, 2));
+  console.log('!!!!!!!!!COMPARISON!!!!!!!');
+  console.log(parseAst(ast));
 
   const diff = getDiff(file1Data, file2Data);
   return diff;
