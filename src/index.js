@@ -143,6 +143,7 @@ const buildAst = (file1Data, file2Data) => {
   };
 
   const ast = {
+    name: 'root',
     type: 'parametresList',
     children: iter(file1Data, file2Data),
   };
@@ -168,28 +169,14 @@ const parseAst = (ast) => {
         return `+ ${elem.name}: ${elem.valueNew}\n- ${elem.name}: ${elem.valueOld}`;
       }
     }
-    return `${elem.children.map(iter).join('\n')}`;
+    const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
+    return `${name}{\n${elem.children.map(iter).join('\n')}\n}`;
   };
 
-  return `{\n${iter(ast)}\n}`;
+  return `${iter(ast)}`;
 };
 // =================
-// Обрабатываем AST
-// const iterAst = (ast) => {
-//   switch (ast.type) {
-//     case 'tagsList':
-//       return `${ast.body.map(iterAst).join('')}`;
-//     case 'tag':
-//       const attrsLine = Object.keys(ast.options).reduce(
-//         (acc, key) => `${acc} ${key}="${ast.options[key]}"`,
-//         '',
-//       );
-//       return `<${ast.name$}${attrsLine}>${iterAst(ast.body)}</${ast.name}>`;
-//     default:
-//       return ast;
-//       // nothing
-//   }
-// };
+
 
 const getDiff = (data1, data2) => {
   const data1Keys = Object.keys(data1);
@@ -224,16 +211,16 @@ const getDataByPathToFile = (pathToFile) => {
 
 const genDiff = (file1Path, file2Path) => {
   const file1Data = getDataByPathToFile(file1Path);
-  // console.log('file1Data');
-  // console.log(file1Data);
+  // console.log('file1Data'); //
+  // console.log(file1Data); //
   const file2Data = getDataByPathToFile(file2Path);
-  // console.log('file2Data');
-  // console.log(file2Data);
-  console.log('!!!!AST!!!!!!!');
-  const ast = buildAst(file1Data, file2Data);
-  console.log(JSON.stringify(ast, null, 2));
-  console.log('!!!!!!!!!COMPARISON!!!!!!!');
-  console.log(parseAst(ast));
+  // console.log('file2Data'); //
+  // console.log(file2Data); //
+  console.log('!!!!AST!!!!!!!'); //
+  const ast = buildAst(file1Data, file2Data); //
+  console.log(JSON.stringify(ast, null, 2)); //
+  console.log('!!!!!!!!!COMPARISON!!!!!!!'); //
+  console.log(parseAst(ast)); //
 
   const diff = getDiff(file1Data, file2Data);
   return diff;
