@@ -152,21 +152,30 @@ const buildAst = (file1Data, file2Data) => {
 };
 // //////////////////////
 // ========================
+const customStringify = (value) => {
+  if (typeof value === 'object') {
+    const keys = Object.keys(value);
+    const values = keys.reduce((acc, key) => `${acc}\n${key}: ${value[key]}`, '').trim();
+    return `{\n${values}\n}`;
+  }
+  return value;
+};
+
 const parseAst = (ast) => {
   const iter = (elem) => {
     // const spaces = '  '.repeat(depth);
     if (elem.type === 'parametre') {
       if (elem.status === 'not changed') {
-        return `  ${elem.name}: ${elem.valueNew}`;
+        return `  ${elem.name}: ${customStringify(elem.valueNew)}`;
       }
       if (elem.status === 'added') {
-        return `+ ${elem.name}: ${elem.valueNew}`;
+        return `+ ${elem.name}: ${customStringify(elem.valueNew)}`;
       }
       if (elem.status === 'deleted') {
-        return `- ${elem.name}: ${elem.valueOld}`;
+        return `- ${elem.name}: ${customStringify(elem.valueOld)}`;
       }
       if (elem.status === 'changed') {
-        return `+ ${elem.name}: ${elem.valueNew}\n- ${elem.name}: ${elem.valueOld}`;
+        return `+ ${elem.name}: ${customStringify(elem.valueNew)}\n- ${elem.name}: ${customStringify(elem.valueOld)}`;
       }
     }
     const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
