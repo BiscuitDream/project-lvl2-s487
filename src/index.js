@@ -152,34 +152,47 @@ const buildAst = (file1Data, file2Data) => {
 };
 // //////////////////////
 // ========================
-const customStringify = (value) => {
+const customStringify = (value, spaces) => {
   if (typeof value === 'object') {
     const keys = Object.keys(value);
-    const values = keys.reduce((acc, key) => `${acc}\n${key}: ${value[key]}`, '').trim();
-    return `{\n${values}\n}`;
+    const values = keys.reduce((acc, key) => `${acc}\n${spaces.repeat(3)}${key}: ${value[key]}`, '');
+    return `{${values}\n${spaces}  }`;
   }
   return value;
 };
 
 const parseAst = (ast) => {
-  const iter = (elem) => {
-    // const spaces = '  '.repeat(depth);
+  const iter = (elem, depth = 0) => {
+    const spaces = '  '.repeat(depth);
+    // console.log('depth :', depth);
+
+    if (elem instanceof Array) {
+      let string = '';
+      for (let i = 0; i < elem.length; i += 1) {
+        string = `${string}\n${iter(elem[i], depth)}`;
+      }
+      return string;
+    }
+
     if (elem.type === 'parametre') {
       if (elem.status === 'not changed') {
-        return `  ${elem.name}: ${customStringify(elem.valueNew)}`;
+        return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, spaces)}`;
       }
       if (elem.status === 'added') {
-        return `+ ${elem.name}: ${customStringify(elem.valueNew)}`;
+        return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, spaces)}`;
       }
       if (elem.status === 'deleted') {
-        return `- ${elem.name}: ${customStringify(elem.valueOld)}`;
+        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, spaces)}`;
       }
       if (elem.status === 'changed') {
-        return `+ ${elem.name}: ${customStringify(elem.valueNew)}\n- ${elem.name}: ${customStringify(elem.valueOld)}`;
+        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, spaces)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, spaces)}`;
       }
     }
     const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
-    return `${name}{\n${elem.children.map(iter).join('\n')}\n}`;
+    // return `${name}{\n${elem.children.map(iter).join('\n')}\n}`;
+    if (elem.type === 'parametresList') {
+      return `${spaces}${name}{${iter(elem.children, depth + 1)}\n}`;
+    }
   };
 
   return `${iter(ast)}`;
@@ -187,28 +200,28 @@ const parseAst = (ast) => {
 // =================
 
 
-const getDiff = (data1, data2) => {
-  const data1Keys = Object.keys(data1);
-  const data2Keys = Object.keys(data2);
-  const dataKeys = [...(new Set(data1Keys.concat(data2Keys)))];
+// const getDiff = (data1, data2) => {
+//   const data1Keys = Object.keys(data1);
+//   const data2Keys = Object.keys(data2);
+//   const dataKeys = [...(new Set(data1Keys.concat(data2Keys)))];
 
-  const rawDiff = dataKeys.reduce((acc, key) => {
-    if (data1Keys.includes(key) && data2Keys.includes(key)) {
-      if (data1[key] === data2[key]) {
-        return `${acc}    ${key}: ${data1[key]}\n`;
-      }
-      return `${acc}  + ${key}: ${data2[key]}\n  - ${key}: ${data1[key]}\n`;
-    }
-    if (!data1Keys.includes(key)) {
-      return `${acc}  + ${key}: ${data2[key]}\n`;
-    }
-    return `${acc}  - ${key}: ${data1[key]}\n`;
-  }, '');
+//   const rawDiff = dataKeys.reduce((acc, key) => {
+//     if (data1Keys.includes(key) && data2Keys.includes(key)) {
+//       if (data1[key] === data2[key]) {
+//         return `${acc}    ${key}: ${data1[key]}\n`;
+//       }
+//       return `${acc}  - ${key}: ${data1[key]}\n  + ${key}: ${data2[key]}\n`;
+//     }
+//     if (!data1Keys.includes(key)) {
+//       return `${acc}  + ${key}: ${data2[key]}\n`;
+//     }
+//     return `${acc}  - ${key}: ${data1[key]}\n`;
+//   }, '');
 
-  const diff = `{\n${rawDiff}}`;
+//   const diff = `{\n${rawDiff}}`;
 
-  return diff;
-};
+//   return diff;
+// };
 
 const getDataByPathToFile = (pathToFile) => {
   const extension = path.extname(pathToFile);
@@ -225,13 +238,15 @@ const genDiff = (file1Path, file2Path) => {
   const file2Data = getDataByPathToFile(file2Path);
   // console.log('file2Data'); //
   // console.log(file2Data); //
-  console.log('!!!!AST!!!!!!!'); //
-  const ast = buildAst(file1Data, file2Data); //
-  console.log(JSON.stringify(ast, null, 2)); //
-  console.log('!!!!!!!!!COMPARISON!!!!!!!'); //
-  console.log(parseAst(ast)); //
+  // console.log('!!!!AST!!!!!!!'); //
+  const ast = buildAst(file1Data, file2Data);
+  // console.log(JSON.stringify(ast, null, 2)); //
+  // console.log('!!!!!!!!!COMPARISON!!!!!!!'); //
+  // console.log(parseAst(ast)); //
 
-  const diff = getDiff(file1Data, file2Data);
+  // const diff = getDiff(file1Data, file2Data);
+  const diff = parseAst(ast);
+  console.log(diff);
   return diff;
 };
 
