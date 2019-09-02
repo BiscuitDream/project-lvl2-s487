@@ -71,8 +71,6 @@ import getParse from './parsers';
 // };
 // type: changed, added, deleted
 
-
-// ////////////////////////////
 const buildAst = (file1Data, file2Data) => {
   const iter = (data1, data2) => {
     const data1Keys = Object.keys(data1);
@@ -118,7 +116,7 @@ const buildAst = (file1Data, file2Data) => {
           name: key,
           type: 'parametre',
           status: 'added',
-          valueOld: null, // maybe undefined
+          valueOld: null,
           valueNew: data2[key],
           children: [],
         };
@@ -130,15 +128,12 @@ const buildAst = (file1Data, file2Data) => {
         type: 'parametre',
         status: 'deleted',
         valueOld: data1[key],
-        valueNew: null, // maybe undefined
+        valueNew: null,
         children: [],
       };
       return [...acc, elem];
     }, []);
 
-    // const ast = childrenList.length > 0
-    //   ? { type: 'parametresList', children: childrenList } : {};
-    // return ast;
     return childrenList;
   };
 
@@ -147,24 +142,24 @@ const buildAst = (file1Data, file2Data) => {
     type: 'parametresList',
     children: iter(file1Data, file2Data),
   };
-  // return iter(file1Data, file2Data);
+
   return ast;
 };
-// //////////////////////
-// ========================
-const customStringify = (value, spaces) => {
+
+const getSpaces = depth => '  '.repeat(depth > 1 ? (depth * 2 - 1) : depth);
+
+const customStringify = (value, depth) => {
   if (typeof value === 'object') {
     const keys = Object.keys(value);
-    const values = keys.reduce((acc, key) => `${acc}\n${spaces.repeat(3)}${key}: ${value[key]}`, '');
-    return `{${values}\n${spaces}  }`;
+    const values = keys.reduce((acc, key) => `${acc}\n${getSpaces(depth + 1)}  ${key}: ${value[key]}`, '');
+    return `{${values}\n${getSpaces(depth)}  }`;
   }
   return value;
 };
 
 const parseAst = (ast) => {
   const iter = (elem, depth = 0) => {
-    const spaces = '  '.repeat(depth);
-    // console.log('depth :', depth);
+    const spaces = getSpaces(depth);
 
     if (elem instanceof Array) {
       let string = '';
@@ -176,28 +171,28 @@ const parseAst = (ast) => {
 
     if (elem.type === 'parametre') {
       if (elem.status === 'not changed') {
-        return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, spaces)}`;
+        return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
       if (elem.status === 'added') {
-        return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, spaces)}`;
+        return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
       if (elem.status === 'deleted') {
-        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, spaces)}`;
+        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
       }
       if (elem.status === 'changed') {
-        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, spaces)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, spaces)}`;
+        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
     }
-    const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
-    // return `${name}{\n${elem.children.map(iter).join('\n')}\n}`;
+
     if (elem.type === 'parametresList') {
-      return `${spaces}${name}{${iter(elem.children, depth + 1)}\n}`;
+      const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
+      const endSpaces = elem.name === 'root' ? '' : `${spaces}  `;
+      return `${spaces}${name}{${iter(elem.children, depth + 1)}\n${endSpaces}}`;
     }
   };
 
   return `${iter(ast)}`;
 };
-// =================
 
 
 // const getDiff = (data1, data2) => {
@@ -246,7 +241,7 @@ const genDiff = (file1Path, file2Path) => {
 
   // const diff = getDiff(file1Data, file2Data);
   const diff = parseAst(ast);
-  console.log(diff);
+  // console.log(diff); //
   return diff;
 };
 
