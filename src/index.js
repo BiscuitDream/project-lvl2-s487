@@ -184,11 +184,14 @@ const parseAst = (ast) => {
       }
     }
 
-    if (elem.type === 'parametresList') {
-      const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
-      const endSpaces = elem.name === 'root' ? '' : `${spaces}  `;
-      return `${spaces}${name}{${iter(elem.children, depth + 1)}\n${endSpaces}}`;
-    }
+    // if (elem.type === 'parametresList') {
+    //   const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
+    //   const endSpaces = elem.name === 'root' ? '' : `${spaces}  `;
+    //   return `${spaces}${name}{${iter(elem.children, depth + 1)}\n${endSpaces}}`;
+    // }
+    const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
+    const endSpaces = elem.name === 'root' ? '' : `${spaces}  `;
+    return `${spaces}${name}{${iter(elem.children, depth + 1)}\n${endSpaces}}`;
   };
 
   return `${iter(ast)}`;
