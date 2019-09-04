@@ -3,6 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import getParse from './parsers';
+import getFormatter from './formatters';
 
 
 //   // const example = { type: tagsList, body: [ { type: tag, name: <>, body: <>, options: {} }] }
@@ -92,7 +93,7 @@ const buildAst = (file1Data, file2Data) => {
           const elem = {
             name: key,
             type: 'parametre',
-            status: 'not changed',
+            status: 'not changed', // unchanged
             valueOld: data1[key],
             valueNew: data2[key],
             children: [],
@@ -126,7 +127,7 @@ const buildAst = (file1Data, file2Data) => {
       const elem = {
         name: key,
         type: 'parametre',
-        status: 'deleted',
+        status: 'deleted', // removed
         valueOld: data1[key],
         valueNew: null,
         children: [],
@@ -144,57 +145,6 @@ const buildAst = (file1Data, file2Data) => {
   };
 
   return ast;
-};
-
-const getSpaces = depth => '  '.repeat(depth > 1 ? (depth * 2 - 1) : depth);
-
-const customStringify = (value, depth) => {
-  if (typeof value === 'object') {
-    const keys = Object.keys(value);
-    const values = keys.reduce((acc, key) => `${acc}\n${getSpaces(depth + 1)}  ${key}: ${value[key]}`, '');
-    return `{${values}\n${getSpaces(depth)}  }`;
-  }
-  return value;
-};
-
-const parseAst = (ast) => {
-  const iter = (elem, depth = 0) => {
-    const spaces = getSpaces(depth);
-
-    if (elem instanceof Array) {
-      let string = '';
-      for (let i = 0; i < elem.length; i += 1) {
-        string = `${string}\n${iter(elem[i], depth)}`;
-      }
-      return string;
-    }
-
-    if (elem.type === 'parametre') {
-      if (elem.status === 'not changed') {
-        return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-      }
-      if (elem.status === 'added') {
-        return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-      }
-      if (elem.status === 'deleted') {
-        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
-      }
-      if (elem.status === 'changed') {
-        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-      }
-    }
-
-    // if (elem.type === 'parametresList') {
-    //   const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
-    //   const endSpaces = elem.name === 'root' ? '' : `${spaces}  `;
-    //   return `${spaces}${name}{${iter(elem.children, depth + 1)}\n${endSpaces}}`;
-    // }
-    const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
-    const endSpaces = elem.name === 'root' ? '' : `${spaces}  `;
-    return `${spaces}${name}{${iter(elem.children, depth + 1)}\n${endSpaces}}`;
-  };
-
-  return `${iter(ast)}`;
 };
 
 
@@ -229,7 +179,8 @@ const getDataByPathToFile = (pathToFile) => {
   return data;
 };
 
-const genDiff = (file1Path, file2Path) => {
+const genDiff = (file1Path, file2Path, format) => {
+  // console.log('format :', format);
   const file1Data = getDataByPathToFile(file1Path);
   // console.log('file1Data'); //
   // console.log(file1Data); //
@@ -243,7 +194,11 @@ const genDiff = (file1Path, file2Path) => {
   // console.log(parseAst(ast)); //
 
   // const diff = getDiff(file1Data, file2Data);
-  const diff = parseAst(ast);
+  // console.log('format :', format);
+  const formater = getFormatter(format);
+  // console.log('formater :', formater);
+  const diff = formater(ast);
+  // const diff = parseAst(ast);
   // console.log(diff); //
   return diff;
 };
