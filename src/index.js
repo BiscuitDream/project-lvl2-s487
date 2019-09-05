@@ -93,7 +93,7 @@ const buildAst = (file1Data, file2Data) => {
           const elem = {
             name: key,
             type: 'parametre',
-            status: 'not changed', // unchanged
+            status: 'unchanged', // 'not changed'
             valueOld: data1[key],
             valueNew: data2[key],
             children: [],
@@ -127,7 +127,7 @@ const buildAst = (file1Data, file2Data) => {
       const elem = {
         name: key,
         type: 'parametre',
-        status: 'deleted', // removed
+        status: 'removed', // 'deleted'
         valueOld: data1[key],
         valueNew: null,
         children: [],

@@ -22,13 +22,13 @@ const commonFormatter = (ast) => {
     }
 
     if (elem.type === 'parametre') {
-      if (elem.status === 'not changed') {
+      if (elem.status === 'unchanged') {
         return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
       if (elem.status === 'added') {
         return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
-      if (elem.status === 'deleted') {
+      if (elem.status === 'removed') {
         return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
       }
       if (elem.status === 'changed') {
