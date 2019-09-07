@@ -1,26 +1,60 @@
 const plainFormatter = (ast) => {
   const property = 'Property';
-  const iter = (elem) => {
+  const iter = (elem, name) => {
+    if (elem instanceof Array) {
+      let string = '';
+      for (let i = 0; i < elem.length; i += 1) {
+        string = `${string}\n${iter(elem[i], name)}`;
+      }
+      return string;
+      // return string.trim();
+    }
+
     if (elem.type === 'parametre') {
+      const getPreName = (nameList) => {
+        const preName = nameList.join('.').slice(1);
+        return preName.length === 0 ? '' : `${preName}.`;
+      };
+      const preName = getPreName(name);
+      // const preName = `${name.join('.').slice(1)}`;
+
+      const getValue = (value) => {
+        if (typeof value === 'object') {
+          return '[complex value]';
+        }
+        if (typeof value === 'boolean' || typeof value === 'number') {
+          return value;
+        }
+        return `'${value}'`;
+      };
+
       if (elem.status === 'unchanged') {
         return '';
       }
       if (elem.status === 'added') {
-        return `Property '${elem.name}' was added with value: ${elem.valueNew}`;
+        return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
       }
       if (elem.status === 'removed') {
-        return `Property '${elem.name}' was removed`;
+        return `Property '${preName}${elem.name}' was removed`;
       }
       if (elem.status === 'changed') {
-        return `Property '${elem.name}' was updated. From ${elem.valueOld} to ${elem.valueNew}`;
+        return `Property '${preName}${elem.name}' was updated. From ${getValue(elem.valueOld)} to ${getValue(elem.valueNew)}`;
       }
     }
+
     if (elem.type === 'parametresList') {
-      return `${elem.children.map(iter).join('\n')}`;
+      const newName = elem.name === 'root' ? '' : elem.name;
+      // return `${elem.children.map(iter).join('\n')}`;
+      // console.log('name :', name);
+      // console.log('elem.name :', elem.name);
+      return iter(elem.children, [...name, newName]);
     }
   };
 
-  return iter(ast).trim();
+  const result = iter(ast, []);
+  console.log(result);
+  return result;
+  // return iter(ast, []);
 };
 
 export default plainFormatter;
@@ -40,7 +74,7 @@ Property 'verbose' was added with value: true
 Property 'group2' was added with value: [complex value]
 */
 
-
+/*
 const exampleRecursive = {
   "name": "root",
   "type": "parametresList",
@@ -227,3 +261,4 @@ const exampleFlat = {
     }
   ]
 }
+*/
