@@ -1,13 +1,12 @@
 const plainFormatter = (ast) => {
-  const property = 'Property';
   const iter = (elem, name) => {
     if (elem instanceof Array) {
       let string = '';
       for (let i = 0; i < elem.length; i += 1) {
-        string = `${string}\n${iter(elem[i], name)}`;
+        // string = `${string}\n${iter(elem[i], name)}`;
+        string = `${string}${(elem[i].status === 'unchanged' ? '' : `${iter(elem[i], name)}\n`)}`;
       }
-      return string;
-      // return string.trim();
+      return string.trim();
     }
 
     if (elem.type === 'parametre') {
@@ -16,7 +15,6 @@ const plainFormatter = (ast) => {
         return preName.length === 0 ? '' : `${preName}.`;
       };
       const preName = getPreName(name);
-      // const preName = `${name.join('.').slice(1)}`;
 
       const getValue = (value) => {
         if (typeof value === 'object') {
@@ -42,19 +40,16 @@ const plainFormatter = (ast) => {
       }
     }
 
-    if (elem.type === 'parametresList') {
+    /* if (elem.type === 'parametresList') {
       const newName = elem.name === 'root' ? '' : elem.name;
-      // return `${elem.children.map(iter).join('\n')}`;
-      // console.log('name :', name);
-      // console.log('elem.name :', elem.name);
       return iter(elem.children, [...name, newName]);
-    }
+    } */
+
+    const newName = elem.name === 'root' ? '' : elem.name;
+    return iter(elem.children, [...name, newName]);
   };
 
-  const result = iter(ast, []);
-  console.log(result);
-  return result;
-  // return iter(ast, []);
+  return iter(ast, []);
 };
 
 export default plainFormatter;
