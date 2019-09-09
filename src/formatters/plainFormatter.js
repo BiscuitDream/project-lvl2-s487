@@ -3,7 +3,6 @@ const plainFormatter = (ast) => {
     if (elem instanceof Array) {
       let string = '';
       for (let i = 0; i < elem.length; i += 1) {
-        // string = `${string}\n${iter(elem[i], name)}`;
         string = `${string}${(elem[i].status === 'unchanged' ? '' : `${iter(elem[i], name)}\n`)}`;
       }
       return string.trim();
@@ -39,11 +38,6 @@ const plainFormatter = (ast) => {
         return `Property '${preName}${elem.name}' was updated. From ${getValue(elem.valueOld)} to ${getValue(elem.valueNew)}`;
       }
     }
-
-    /* if (elem.type === 'parametresList') {
-      const newName = elem.name === 'root' ? '' : elem.name;
-      return iter(elem.children, [...name, newName]);
-    } */
 
     const newName = elem.name === 'root' ? '' : elem.name;
     return iter(elem.children, [...name, newName]);

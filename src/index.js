@@ -5,73 +5,6 @@ import path from 'path';
 import getParse from './parsers';
 import getFormatter from './formatters';
 
-
-//   // const example = { type: tagsList, body: [ { type: tag, name: <>, body: <>, options: {} }] }
-
-// Обрабатываем AST
-// const iterAst = (ast) => {
-//   switch (ast.type) {
-//     case 'tagsList':
-//       return `${ast.body.map(iterAst).join('')}`;
-//     case 'tag':
-//       const attrsLine = Object.keys(ast.options).reduce(
-//         (acc, key) => `${acc} ${key}="${ast.options[key]}"`,
-//         '',
-//       );
-//       return `<${ast.name$}${attrsLine}>${iterAst(ast.body)}</${ast.name}>`;
-//     default:
-//       return ast;
-//       // nothing
-//   }
-// };
-
-// Строим AST
-// const iter = (data) => {
-//   if (data[0] instanceof Array) {
-//     return { type: 'tagsList', body: data.map(iter) };
-//   }
-
-//   let body;
-//   let options;
-//   if (data.length === 3) {
-//     body = data[2];
-//     options = data[1];
-//   } else if (data.length === 2) {
-//     body = data[1];
-//     options = {};
-//   }
-
-//   const processedBody = (body instanceof Array) ? iter(body) : body;
-
-//   return { type: 'tag', name: data[0], body: processedBody, options };
-// };
-
-
-// const example = {
-//   type: 'parametresList',
-//   children: [
-//     {
-//       type: 'parametre',
-//       name: 'paramName',
-//       status: 'delete',
-//       oldValue: 'value1',
-//       newValue: '',
-//       children: [],
-//     },
-//   ],
-// };
-
-// const anotherExample = {
-//   name: 'key',
-//   type: 'changed',
-//   value: {
-//     old: 'old-value',
-//     new: 'new-value',
-//   },
-//   children: [],
-// };
-// type: changed, added, deleted
-
 const buildAst = (file1Data, file2Data) => {
   const iter = (data1, data2) => {
     const data1Keys = Object.keys(data1);
@@ -93,7 +26,7 @@ const buildAst = (file1Data, file2Data) => {
           const elem = {
             name: key,
             type: 'parametre',
-            status: 'unchanged', // 'not changed'
+            status: 'unchanged',
             valueOld: data1[key],
             valueNew: data2[key],
             children: [],
@@ -127,7 +60,7 @@ const buildAst = (file1Data, file2Data) => {
       const elem = {
         name: key,
         type: 'parametre',
-        status: 'removed', // 'deleted'
+        status: 'removed',
         valueOld: data1[key],
         valueNew: null,
         children: [],
@@ -147,30 +80,6 @@ const buildAst = (file1Data, file2Data) => {
   return ast;
 };
 
-
-// const getDiff = (data1, data2) => {
-//   const data1Keys = Object.keys(data1);
-//   const data2Keys = Object.keys(data2);
-//   const dataKeys = [...(new Set(data1Keys.concat(data2Keys)))];
-
-//   const rawDiff = dataKeys.reduce((acc, key) => {
-//     if (data1Keys.includes(key) && data2Keys.includes(key)) {
-//       if (data1[key] === data2[key]) {
-//         return `${acc}    ${key}: ${data1[key]}\n`;
-//       }
-//       return `${acc}  - ${key}: ${data1[key]}\n  + ${key}: ${data2[key]}\n`;
-//     }
-//     if (!data1Keys.includes(key)) {
-//       return `${acc}  + ${key}: ${data2[key]}\n`;
-//     }
-//     return `${acc}  - ${key}: ${data1[key]}\n`;
-//   }, '');
-
-//   const diff = `{\n${rawDiff}}`;
-
-//   return diff;
-// };
-
 const getDataByPathToFile = (pathToFile) => {
   const extension = path.extname(pathToFile);
   const parser = getParse(extension);
@@ -180,26 +89,12 @@ const getDataByPathToFile = (pathToFile) => {
 };
 
 const genDiff = (file1Path, file2Path, format) => {
-  // console.log('format :', format);
   const file1Data = getDataByPathToFile(file1Path);
-  // console.log('file1Data'); //
-  // console.log(file1Data); //
   const file2Data = getDataByPathToFile(file2Path);
-  // console.log('file2Data'); //
-  // console.log(file2Data); //
-  // console.log('!!!!AST!!!!!!!'); //
   const ast = buildAst(file1Data, file2Data);
-  // console.log(JSON.stringify(ast, null, 2)); //
-  // console.log('!!!!!!!!!COMPARISON!!!!!!!'); //
-  // console.log(parseAst(ast)); //
-
-  // const diff = getDiff(file1Data, file2Data);
-  // console.log('format :', format);
   const formater = getFormatter(format);
-  // console.log('formater :', formater);
   const diff = formater(ast);
-  // const diff = parseAst(ast);
-  // console.log(diff); //
+
   return diff;
 };
 

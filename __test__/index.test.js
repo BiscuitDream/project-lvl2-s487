@@ -15,7 +15,6 @@ const filesForTest = [
 test.each(filesForTest)(
   'getDiff(%s, %s)',
   (beforeFile, afterFile, expectedFile, format) => {
-    // console.log('format :', format);
     const expectedPath = `${__dirname}/__fixtures__/${expectedFile}`;
     const expected = fs.readFileSync(expectedPath, 'utf-8').trim();
 
