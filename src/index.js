@@ -1,5 +1,3 @@
-// https://github.com/evanw/node-source-map-support пакет для поддержки нодой node source map
-
 import fs from 'fs';
 import path from 'path';
 import getParse from './parsers';
