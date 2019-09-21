@@ -80,18 +80,18 @@ const buildAst = (file1Data, file2Data) => {
 
 const getDataByPathToFile = (pathToFile) => {
   const extension = path.extname(pathToFile);
-  const parser = getParse(extension);
+  const parse = getParse(extension);
   const content = fs.readFileSync(pathToFile, 'utf-8');
-  const data = parser(content);
+  const data = parse(content);
   return data;
 };
 
-const genDiff = (file1Path, file2Path, format) => {
+const genDiff = (file1Path, file2Path, OutputFormat) => {
   const file1Data = getDataByPathToFile(file1Path);
   const file2Data = getDataByPathToFile(file2Path);
   const ast = buildAst(file1Data, file2Data);
-  const formater = getFormatter(format);
-  const diff = formater(ast);
+  const format = getFormatter(OutputFormat);
+  const diff = format(ast);
 
   return diff;
 };
