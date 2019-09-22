@@ -6,15 +6,9 @@ import getFormatter from './formatters';
 
 const buildAst = (file1Data, file2Data) => {
   const iter = (data1, data2) => {
-    // const data1Keys = Object.keys(data1);
-    // const data2Keys = Object.keys(data2);
-    // const dataKeys = [...(new Set(data1Keys.concat(data2Keys)))];
     const dataKeys = _.union(_.keys(data1), _.keys(data2));
-    // const keys = Object.keys({ ...obj1, ...obj2 });
-    // const keys = _.union(_.keys(obj1), _.keys(obj2));
 
     const childrenList = dataKeys.reduce((acc, key) => {
-      // if (data1Keys.includes(key) && data2Keys.includes(key)) {
       if (_.has(data1, key) && _.has(data2, key)) {
         if (typeof data1[key] === 'object' && typeof data2[key] === 'object') {
           const elem = {
@@ -48,7 +42,6 @@ const buildAst = (file1Data, file2Data) => {
         return [...acc, elem];
       }
 
-      // if (!data1Keys.includes(key)) {
       if (!_.has(data1, key)) {
         const elem = {
           name: key,
