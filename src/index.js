@@ -79,7 +79,7 @@ const buildAst = (file1Data, file2Data) => {
 
 const getDataByPathToFile = (pathToFile) => {
   const extension = path.extname(pathToFile);
-  const parse = getParse(extension);
+  const parse = getParse(extension.slice(1));
   const content = fs.readFileSync(pathToFile, 'utf-8');
   const data = parse(content);
   return data;
