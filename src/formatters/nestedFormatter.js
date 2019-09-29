@@ -10,7 +10,7 @@ const customStringify = (value, depth) => {
 };
 
 const nestedFormatter = (ast) => {
-  const iter = (elem, depth = 0) => {
+  const iter = (elem, depth = 1) => {
     const spaces = getSpaces(depth);
 
     if (elem instanceof Array) {
@@ -36,12 +36,10 @@ const nestedFormatter = (ast) => {
       }
     }
 
-    const name = elem.name === 'root' ? '' : `  ${elem.name}: `;
-    const endSpaces = elem.name === 'root' ? '' : `${spaces}  `;
-    return `${spaces}${name}{${iter(elem.children, depth + 1)}\n${endSpaces}}`;
+    return `${spaces}  ${elem.name}: {${iter(elem.children, depth + 1)}\n${spaces}  }`;
   };
 
-  return `${iter(ast)}`;
+  return `{${iter(ast)}\n}`;
 };
 
 export default nestedFormatter;

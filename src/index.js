@@ -64,11 +64,7 @@ const buildAst = (file1Data, file2Data) => {
     return childrenList;
   };
 
-  const ast = {
-    name: 'root',
-    type: 'parametresList',
-    children: iter(file1Data, file2Data),
-  };
+  const ast = iter(file1Data, file2Data);
 
   return ast;
 };
@@ -85,8 +81,6 @@ const genDiff = (file1Path, file2Path, OutputFormat) => {
   const file1Data = getDataByPathToFile(file1Path);
   const file2Data = getDataByPathToFile(file2Path);
   const ast = buildAst(file1Data, file2Data);
-  // console.log('AST!!!!!!');
-  // console.log(ast);
   const format = getFormatter(OutputFormat);
   const diff = format(ast);
 

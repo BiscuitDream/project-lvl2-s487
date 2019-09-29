@@ -1,3 +1,18 @@
+const getPreName = (nameList) => {
+  const preName = nameList.join('.');
+  return preName.length === 0 ? '' : `${preName}.`;
+};
+
+const getValue = (value) => {
+  if (typeof value === 'object') {
+    return '[complex value]';
+  }
+  if (typeof value === 'boolean' || typeof value === 'number') {
+    return value;
+  }
+  return `'${value}'`;
+};
+
 const plainFormatter = (ast) => {
   const iter = (elem, name) => {
     if (elem instanceof Array) {
@@ -9,21 +24,7 @@ const plainFormatter = (ast) => {
     }
 
     if (elem.type === 'parametre') {
-      const getPreName = (nameList) => {
-        const preName = nameList.join('.').slice(1);
-        return preName.length === 0 ? '' : `${preName}.`;
-      };
       const preName = getPreName(name);
-
-      const getValue = (value) => {
-        if (typeof value === 'object') {
-          return '[complex value]';
-        }
-        if (typeof value === 'boolean' || typeof value === 'number') {
-          return value;
-        }
-        return `'${value}'`;
-      };
 
       if (elem.status === 'unchanged') {
         return '';
@@ -39,8 +40,7 @@ const plainFormatter = (ast) => {
       }
     }
 
-    const newName = elem.name === 'root' ? '' : elem.name;
-    return iter(elem.children, [...name, newName]);
+    return iter(elem.children, [...name, elem.name]);
   };
 
   return iter(ast, []);
