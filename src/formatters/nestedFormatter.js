@@ -9,7 +9,7 @@ const customStringify = (value, depth) => {
   return value;
 };
 
-const commonFormatter = (ast) => {
+const nestedFormatter = (ast) => {
   const iter = (elem, depth = 0) => {
     const spaces = getSpaces(depth);
 
@@ -44,4 +44,4 @@ const commonFormatter = (ast) => {
   return `${iter(ast)}`;
 };
 
-export default commonFormatter;
+export default nestedFormatter;

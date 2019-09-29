@@ -1,14 +1,14 @@
-import common from './commonFormatter';
+import nested from './nestedFormatter';
 import plain from './plainFormatter';
 import json from './jsonFormatter';
 
 
 const formatters = {
-  common,
+  nested,
   plain,
   json,
 };
 
-const getFormatter = (format = 'common') => formatters[format];
+const getFormatter = (format = 'nested') => formatters[format];
 
 export default getFormatter;

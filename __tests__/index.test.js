@@ -2,12 +2,12 @@ import fs from 'fs';
 import genDiff from '../src';
 
 const filesForTest = [
-  ['before.json', 'after.json', 'expected-flat.txt', 'common'],
-  ['before.yml', 'after.yml', 'expected-flat.txt', 'common'],
-  ['before.ini', 'after.ini', 'expected-flat.txt', 'common'],
-  ['before-recursive.json', 'after-recursive.json', 'expected-recursive.txt', 'common'],
-  ['before-recursive.yml', 'after-recursive.yml', 'expected-recursive.txt', 'common'],
-  ['before-recursive.ini', 'after-recursive.ini', 'expected-recursive.txt', 'common'],
+  ['before.json', 'after.json', 'expected-flat.txt', 'nested'],
+  ['before.yml', 'after.yml', 'expected-flat.txt', 'nested'],
+  ['before.ini', 'after.ini', 'expected-flat.txt', 'nested'],
+  ['before-recursive.json', 'after-recursive.json', 'expected-recursive.txt', 'nested'],
+  ['before-recursive.yml', 'after-recursive.yml', 'expected-recursive.txt', 'nested'],
+  ['before-recursive.ini', 'after-recursive.ini', 'expected-recursive.txt', 'nested'],
   ['before.json', 'after.json', 'expected-flat-plain.txt', 'plain'],
   ['before-recursive.json', 'after-recursive.json', 'expected-recursive-plain.txt', 'plain'],
 ];
