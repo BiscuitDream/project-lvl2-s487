@@ -42,8 +42,10 @@ Options:
 Доступны 3 вида форматирования: обычный, plain, json
 
 Плоские конфиги:
+
 [![asciicast](https://asciinema.org/a/Gm6WdtT8W8mUv3rjjFstlz6em.svg)](https://asciinema.org/a/Gm6WdtT8W8mUv3rjjFstlz6em)
 
 
 Вложенные конфиги:
+
 [![asciicast](https://asciinema.org/a/r6XSHpj3Eno1EDtkxaSpyM9zo.svg)](https://asciinema.org/a/r6XSHpj3Eno1EDtkxaSpyM9zo)
