@@ -26,7 +26,6 @@ const buildAst = (file1Data, file2Data) => {
             status: 'unchanged',
             valueOld: data1[key],
             valueNew: data2[key],
-            children: [],
           };
           return elem;
         }
@@ -37,7 +36,6 @@ const buildAst = (file1Data, file2Data) => {
           status: 'changed',
           valueOld: data1[key],
           valueNew: data2[key],
-          children: [],
         };
         return elem;
       }
@@ -49,7 +47,6 @@ const buildAst = (file1Data, file2Data) => {
           status: 'added',
           valueOld: null,
           valueNew: data2[key],
-          children: [],
         };
         return elem;
       }
@@ -60,7 +57,6 @@ const buildAst = (file1Data, file2Data) => {
         status: 'removed',
         valueOld: data1[key],
         valueNew: null,
-        children: [],
       };
       return elem;
     });
@@ -89,6 +85,8 @@ const genDiff = (file1Path, file2Path, OutputFormat) => {
   const file1Data = getDataByPathToFile(file1Path);
   const file2Data = getDataByPathToFile(file2Path);
   const ast = buildAst(file1Data, file2Data);
+  // console.log('AST!!!!!!');
+  // console.log(ast);
   const format = getFormatter(OutputFormat);
   const diff = format(ast);
 
