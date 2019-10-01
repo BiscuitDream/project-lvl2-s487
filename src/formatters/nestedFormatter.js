@@ -3,12 +3,13 @@ import _ from 'lodash';
 const getSpaces = depth => '  '.repeat(depth > 1 ? (depth * 2 - 1) : depth);
 
 const customStringify = (value, depth) => {
-  if (typeof value === 'object') {
-    const keys = Object.keys(value);
-    const values = keys.reduce((acc, key) => `${acc}\n${getSpaces(depth + 1)}  ${key}: ${value[key]}`, '');
-    return `{${values}\n${getSpaces(depth)}  }`;
+  if (typeof value !== 'object') {
+    return value;
   }
-  return value;
+
+  const keys = Object.keys(value);
+  const values = keys.reduce((acc, key) => `${acc}\n${getSpaces(depth + 1)}  ${key}: ${value[key]}`, '');
+  return `{${values}\n${getSpaces(depth)}  }`;
 };
 
 const nestedFormatter = (ast) => {
