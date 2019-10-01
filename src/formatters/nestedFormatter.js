@@ -21,19 +21,17 @@ const nestedFormatter = (ast) => {
       return string;
     }
 
-    if (elem.kind === 'parametre') {
-      if (elem.type === 'unchanged') {
-        return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-      }
-      if (elem.type === 'added') {
-        return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-      }
-      if (elem.type === 'removed') {
-        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
-      }
-      if (elem.type === 'changed') {
-        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-      }
+    if (elem.type === 'unchanged') {
+      return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
+    }
+    if (elem.type === 'added') {
+      return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
+    }
+    if (elem.type === 'removed') {
+      return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
+    }
+    if (elem.type === 'changed') {
+      return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
     }
 
     return `${spaces}  ${elem.name}: {${iter(elem.children, depth + 1)}\n${spaces}  }`;
