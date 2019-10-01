@@ -18,24 +18,24 @@ const plainFormatter = (ast) => {
     if (elem instanceof Array) {
       let string = '';
       for (let i = 0; i < elem.length; i += 1) {
-        string = `${string}${(elem[i].status === 'unchanged' ? '' : `${iter(elem[i], name)}\n`)}`;
+        string = `${string}${(elem[i].type === 'unchanged' ? '' : `${iter(elem[i], name)}\n`)}`;
       }
       return string.trim();
     }
 
-    if (elem.type === 'parametre') {
+    if (elem.kind === 'parametre') {
       const preName = getPreName(name);
 
-      if (elem.status === 'unchanged') {
+      if (elem.type === 'unchanged') {
         return '';
       }
-      if (elem.status === 'added') {
+      if (elem.type === 'added') {
         return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
       }
-      if (elem.status === 'removed') {
+      if (elem.type === 'removed') {
         return `Property '${preName}${elem.name}' was removed`;
       }
-      if (elem.status === 'changed') {
+      if (elem.type === 'changed') {
         return `Property '${preName}${elem.name}' was updated. From ${getValue(elem.valueOld)} to ${getValue(elem.valueNew)}`;
       }
     }

@@ -21,17 +21,17 @@ const nestedFormatter = (ast) => {
       return string;
     }
 
-    if (elem.type === 'parametre') {
-      if (elem.status === 'unchanged') {
+    if (elem.kind === 'parametre') {
+      if (elem.type === 'unchanged') {
         return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
-      if (elem.status === 'added') {
+      if (elem.type === 'added') {
         return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
-      if (elem.status === 'removed') {
+      if (elem.type === 'removed') {
         return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
       }
-      if (elem.status === 'changed') {
+      if (elem.type === 'changed') {
         return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       }
     }
