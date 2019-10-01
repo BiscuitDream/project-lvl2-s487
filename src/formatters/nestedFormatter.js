@@ -21,17 +21,18 @@ const nestedFormatter = (ast) => {
       return string;
     }
 
-    if (elem.type === 'unchanged') {
-      return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-    }
-    if (elem.type === 'added') {
-      return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-    }
-    if (elem.type === 'removed') {
-      return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
-    }
-    if (elem.type === 'changed') {
-      return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
+    switch (elem.type) {
+      case 'unchanged':
+        return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
+
+      case 'added':
+        return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
+      case 'removed':
+        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
+      case 'changed':
+        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
+      default:
+        break;
     }
 
     return `${spaces}  ${elem.name}: {${iter(elem.children, depth + 1)}\n${spaces}  }`;
