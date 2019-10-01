@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const getSpaces = depth => '  '.repeat(depth > 1 ? (depth * 2 - 1) : depth);
 
 const customStringify = (value, depth) => {
@@ -14,11 +16,8 @@ const nestedFormatter = (ast) => {
     const spaces = getSpaces(depth);
 
     if (elem instanceof Array) {
-      let string = '';
-      for (let i = 0; i < elem.length; i += 1) {
-        string = `${string}\n${iter(elem[i], depth)}`;
-      }
-      return string;
+      const strings = elem.map(el => iter(el, depth));
+      return _.flatten(strings).join('\n');
     }
 
     switch (elem.type) {
@@ -30,15 +29,15 @@ const nestedFormatter = (ast) => {
       case 'removed':
         return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`;
       case 'changed':
-        return `${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}\n${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
+        return [`${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`, `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`];
       default:
         break;
     }
 
-    return `${spaces}  ${elem.name}: {${iter(elem.children, depth + 1)}\n${spaces}  }`;
+    return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
   };
 
-  return `{${iter(ast)}\n}`;
+  return `{\n${iter(ast)}\n}`;
 };
 
 export default nestedFormatter;
