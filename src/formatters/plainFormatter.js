@@ -14,17 +14,17 @@ const getValue = (value) => {
 };
 
 const plainFormatter = (ast) => {
-  const iter = (elem, name) => {
+  const iter = (elem, names) => {
     if (elem instanceof Array) {
       const strings = elem
         .filter(el => el.type !== 'unchanged')
-        .map(el => iter(el, name));
+        .map(el => iter(el, names));
 
       return strings.join('\n');
     }
 
     if (elem.kind === 'parametre') {
-      const preName = getPreName(name);
+      const preName = getPreName(names);
 
       if (elem.type === 'unchanged') {
         return '';
@@ -40,7 +40,7 @@ const plainFormatter = (ast) => {
       }
     }
 
-    return iter(elem.children, [...name, elem.name]);
+    return iter(elem.children, [...names, elem.name]);
   };
 
   return iter(ast, []);
