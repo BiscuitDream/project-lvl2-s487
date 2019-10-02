@@ -24,7 +24,6 @@ const nestedFormatter = (ast) => {
     switch (elem.type) {
       case 'unchanged':
         return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
-
       case 'added':
         return `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       case 'removed':
