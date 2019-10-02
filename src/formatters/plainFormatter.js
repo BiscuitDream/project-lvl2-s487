@@ -25,18 +25,17 @@ const plainFormatter = (ast) => {
 
     if (elem.kind === 'parametre') {
       const preName = getPreName(names);
-
-      if (elem.type === 'unchanged') {
-        return '';
-      }
-      if (elem.type === 'added') {
-        return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
-      }
-      if (elem.type === 'removed') {
-        return `Property '${preName}${elem.name}' was removed`;
-      }
-      if (elem.type === 'changed') {
-        return `Property '${preName}${elem.name}' was updated. From ${getValue(elem.valueOld)} to ${getValue(elem.valueNew)}`;
+      switch (elem.type) {
+        case 'unchanged':
+          return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
+        case 'added':
+          return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
+        case 'removed':
+          return `Property '${preName}${elem.name}' was removed`;
+        case 'changed':
+          return `Property '${preName}${elem.name}' was updated. From ${getValue(elem.valueOld)} to ${getValue(elem.valueNew)}`;
+        default:
+          break;
       }
     }
 
