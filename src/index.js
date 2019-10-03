@@ -13,7 +13,6 @@ const buildAst = (file1Data, file2Data) => {
         if (typeof data1[key] === 'object' && typeof data2[key] === 'object') {
           const elem = {
             name: key,
-            kind: 'parametresList',
             children: iter(data1[key], data2[key]),
           };
           return elem;
@@ -22,7 +21,6 @@ const buildAst = (file1Data, file2Data) => {
         if (data1[key] === data2[key]) {
           const elem = {
             name: key,
-            kind: 'parametre',
             type: 'unchanged',
             valueOld: data1[key],
             valueNew: data2[key],
@@ -32,7 +30,6 @@ const buildAst = (file1Data, file2Data) => {
 
         const elem = {
           name: key,
-          kind: 'parametre',
           type: 'changed',
           valueOld: data1[key],
           valueNew: data2[key],
@@ -43,7 +40,6 @@ const buildAst = (file1Data, file2Data) => {
       if (!_.has(data1, key)) {
         const elem = {
           name: key,
-          kind: 'parametre',
           type: 'added',
           valueOld: null,
           valueNew: data2[key],
@@ -53,7 +49,6 @@ const buildAst = (file1Data, file2Data) => {
 
       const elem = {
         name: key,
-        kind: 'parametre',
         type: 'removed',
         valueOld: data1[key],
         valueNew: null,

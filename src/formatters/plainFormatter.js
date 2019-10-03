@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const getPreName = (nameList) => {
   const preName = nameList.join('.');
   return preName.length === 0 ? '' : `${preName}.`;
@@ -23,7 +25,7 @@ const plainFormatter = (ast) => {
       return strings.join('\n');
     }
 
-    if (elem.kind === 'parametre') {
+    if (!_.has(elem, 'children')) {
       const preName = getPreName(names);
       switch (elem.type) {
         case 'unchanged':
