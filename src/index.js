@@ -13,6 +13,7 @@ const buildAst = (file1Data, file2Data) => {
         if (typeof data1[key] === 'object' && typeof data2[key] === 'object') {
           const elem = {
             name: key,
+            type: 'listOfChildren',
             children: iter(data1[key], data2[key]),
           };
           return elem;

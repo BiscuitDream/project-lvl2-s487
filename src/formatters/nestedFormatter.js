@@ -16,6 +16,10 @@ const nestedFormatter = (ast) => {
   const iter = (elem, depth = 1) => {
     const spaces = getSpaces(depth);
 
+    if (elem.type === 'listOfChildren') {
+      return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
+    }
+
     if (elem instanceof Array) {
       const strings = elem.map(el => iter(el, depth));
       return _.flatten(strings).join('\n');
@@ -31,10 +35,8 @@ const nestedFormatter = (ast) => {
       case 'changed':
         return [`${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`, `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`];
       default:
-        break;
+        throw new Error(`Неверный тип узла: ${elem.type}`);
     }
-
-    return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
   };
 
   return `{\n${iter(ast)}\n}`;
