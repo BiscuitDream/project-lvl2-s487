@@ -73,11 +73,11 @@ const getDataByPathToFile = (pathToFile) => {
   return data;
 };
 
-const genDiff = (file1Path, file2Path, OutputFormat) => {
+const genDiff = (file1Path, file2Path, outputFormat) => {
   const file1Data = getDataByPathToFile(file1Path);
   const file2Data = getDataByPathToFile(file2Path);
   const ast = buildAst(file1Data, file2Data);
-  const format = getFormatter(OutputFormat);
+  const format = getFormatter(outputFormat);
   const diff = format(ast);
 
   return diff;
