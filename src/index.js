@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 import getParse from './parsers';
-import getFormatter from './formatters';
+import getFormatter from './renders';
 
 const buildAst = (file1Data, file2Data) => {
   const iter = (data1, data2) => {
@@ -75,8 +75,8 @@ const genDiff = (file1Path, file2Path, outputFormat) => {
   const file1Data = getDataByPathToFile(file1Path);
   const file2Data = getDataByPathToFile(file2Path);
   const ast = buildAst(file1Data, file2Data);
-  const format = getFormatter(outputFormat);
-  const diff = format(ast);
+  const render = getFormatter(outputFormat);
+  const diff = render(ast);
 
   return diff;
 };

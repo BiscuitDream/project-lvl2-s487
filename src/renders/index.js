@@ -3,12 +3,12 @@ import plain from './plainFormatter';
 import json from './jsonFormatter';
 
 
-const formatters = {
+const renders = {
   nested,
   plain,
   json,
 };
 
-const getFormatter = (format = 'nested') => formatters[format];
+const getRender = (format = 'nested') => renders[format];
 
-export default getFormatter;
+export default getRender;
