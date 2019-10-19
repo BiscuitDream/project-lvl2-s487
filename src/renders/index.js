@@ -1,7 +1,6 @@
-import nested from './nestedFormatter';
-import plain from './plainFormatter';
-import json from './jsonFormatter';
-
+import nested from './nestedRender';
+import plain from './plainRender';
+import json from './jsonRender';
 
 const renders = {
   nested,
