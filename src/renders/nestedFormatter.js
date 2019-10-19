@@ -20,14 +20,15 @@ const nestedFormatter = (ast) => {
     //   return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
     // }
 
-    if (elem instanceof Array) {
-      const strings = elem.map(el => iter(el, depth));
-      return _.flatten(strings).join('\n');
-    }
+    // if (elem instanceof Array) {
+    //   const strings = elem.map(el => iter(el, depth));
+    //   return _.flatten(strings).join('\n');
+    // }
 
+    // Первый вариант свича добавлен
     switch (elem.type) {
       case 'listOfChildren':
-        return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
+        return `${spaces}  ${elem.name}: {\n${_.flatten(elem.children.map(el => iter(el, depth + 1))).join('\n')}\n${spaces}  }`;
       case 'unchanged':
         return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       case 'added':
@@ -41,7 +42,10 @@ const nestedFormatter = (ast) => {
     }
   };
 
-  return `{\n${iter(ast)}\n}`;
+  // return `{\n${iter(ast)}\n}`;
+
+  // так как дерево - список, возможно стоит корневому элементу дать имя и свойство со списком детей
+  return `{\n${_.flatten(ast.map(elem => iter(elem))).join('\n')}\n}`;
 };
 
 export default nestedFormatter;
