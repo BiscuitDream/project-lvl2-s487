@@ -15,9 +15,9 @@ const getValue = (value) => {
 
 const plainFormatter = (ast) => {
   const iter = (elem, names) => {
-    if (elem.type === 'listOfChildren') {
-      return iter(elem.children, [...names, elem.name]);
-    }
+    // if (elem.type === 'listOfChildren') {
+    //   return iter(elem.children, [...names, elem.name]);
+    // }
 
     if (elem instanceof Array) {
       const strings = elem
@@ -28,7 +28,10 @@ const plainFormatter = (ast) => {
     }
 
     const preName = getPreName(names);
+
     switch (elem.type) {
+      case 'listOfChildren':
+        return iter(elem.children, [...names, elem.name]);
       case 'unchanged':
         return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
       case 'added':
