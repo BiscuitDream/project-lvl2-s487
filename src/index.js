@@ -42,7 +42,6 @@ const buildAst = (file1Data, file2Data) => {
         const elem = {
           name: key,
           type: 'added',
-          valueOld: null,
           valueNew: data2[key],
         };
         return elem;
@@ -52,7 +51,6 @@ const buildAst = (file1Data, file2Data) => {
         name: key,
         type: 'removed',
         valueOld: data1[key],
-        valueNew: null,
       };
       return elem;
     });
