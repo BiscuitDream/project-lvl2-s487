@@ -19,19 +19,22 @@ const plainFormatter = (ast) => {
     //   return iter(elem.children, [...names, elem.name]);
     // }
 
-    if (elem instanceof Array) {
-      const strings = elem
-        .filter(el => el.type !== 'unchanged')
-        .map(el => iter(el, names));
+    // if (elem instanceof Array) {
+    //   const strings = elem
+    //     .filter(el => el.type !== 'unchanged')
+    //     .map(el => iter(el, names));
 
-      return strings.join('\n');
-    }
+    //   return strings.join('\n');
+    // }
 
     const preName = getPreName(names);
 
     switch (elem.type) {
       case 'listOfChildren':
-        return iter(elem.children, [...names, elem.name]);
+        return elem.children
+          .filter(el => el.type !== 'unchanged')
+          .map(el => iter(el, [...names, elem.name]))
+          .join('\n');
       case 'unchanged':
         return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
       case 'added':
@@ -45,7 +48,11 @@ const plainFormatter = (ast) => {
     }
   };
 
-  return iter(ast, []);
+  // return iter(ast, []);
+  return ast
+    .filter(el => el.type !== 'unchanged')
+    .map(el => iter(el, []))
+    .join('\n');
 };
 
 export default plainFormatter;
