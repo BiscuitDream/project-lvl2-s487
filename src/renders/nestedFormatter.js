@@ -16,9 +16,9 @@ const nestedFormatter = (ast) => {
   const iter = (elem, depth = 1) => {
     const spaces = getSpaces(depth);
 
-    if (elem.type === 'listOfChildren') {
-      return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
-    }
+    // if (elem.type === 'listOfChildren') {
+    //   return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
+    // }
 
     if (elem instanceof Array) {
       const strings = elem.map(el => iter(el, depth));
@@ -26,6 +26,8 @@ const nestedFormatter = (ast) => {
     }
 
     switch (elem.type) {
+      case 'listOfChildren':
+        return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
       case 'unchanged':
         return `${spaces}  ${elem.name}: ${customStringify(elem.valueNew, depth)}`;
       case 'added':
