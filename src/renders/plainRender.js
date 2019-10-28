@@ -15,7 +15,6 @@ const getValue = (value) => {
 
 const plainFormatter = (ast) => {
   const iter = (elems, names) => elems.filter(el => el.type !== 'unchanged').map((elem) => {
-
     const preName = getPreName(names);
 
     switch (elem.type) {
