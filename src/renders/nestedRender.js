@@ -38,7 +38,7 @@ const nestedFormatter = (ast) => {
       case 'changed':
         return [`${spaces}- ${elem.name}: ${customStringify(elem.valueOld, depth)}`, `${spaces}+ ${elem.name}: ${customStringify(elem.valueNew, depth)}`];
       default:
-        throw new Error(`Неверный тип узла: ${elem.type}`);
+        throw new Error(`Incorrect node type: ${elem.type}`);
     }
   };
 

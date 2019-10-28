@@ -44,7 +44,7 @@ const plainFormatter = (ast) => {
       case 'changed':
         return `Property '${preName}${elem.name}' was updated. From ${getValue(elem.valueOld)} to ${getValue(elem.valueNew)}`;
       default:
-        throw new Error(`Неверный тип узла: ${elem.type}`);
+        throw new Error(`Incorrect node type: ${elem.type}`);
     }
   };
 
