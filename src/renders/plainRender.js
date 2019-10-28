@@ -14,7 +14,7 @@ const getValue = (value) => {
 };
 
 const plainFormatter = (ast) => {
-  const iter = (elem, names) => {
+  const iter = (elems, names) => elems.filter(el => el.type !== 'unchanged').map((elem) => {
     // if (elem.type === 'listOfChildren') {
     //   return iter(elem.children, [...names, elem.name]);
     // }
@@ -31,10 +31,11 @@ const plainFormatter = (ast) => {
 
     switch (elem.type) {
       case 'listOfChildren':
-        return elem.children
-          .filter(el => el.type !== 'unchanged')
-          .map(el => iter(el, [...names, elem.name]))
-          .join('\n');
+        // return elem.children
+        //   .filter(el => el.type !== 'unchanged')
+        //   .map(el => iter(el, [...names, elem.name]))
+        //   .join('\n');
+        return iter(elem.children, [...names, elem.name]).join('\n');
       case 'unchanged':
         return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
       case 'added':
@@ -46,13 +47,14 @@ const plainFormatter = (ast) => {
       default:
         throw new Error(`Incorrect node type: ${elem.type}`);
     }
-  };
+  });
 
   // return iter(ast, []);
-  return ast
-    .filter(el => el.type !== 'unchanged')
-    .map(el => iter(el, []))
-    .join('\n');
+  // return ast
+  //   .filter(el => el.type !== 'unchanged')
+  //   .map(el => iter(el, []))
+  //   .join('\n');
+  return iter(ast, []).join('\n');
 };
 
 export default plainFormatter;
