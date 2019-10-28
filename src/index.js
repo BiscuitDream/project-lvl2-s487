@@ -11,43 +11,48 @@ const buildAst = (file1Data, file2Data) => {
     const childrenList = dataKeys.map((key) => {
       if (_.has(data1, key) && _.has(data2, key)) {
         if (typeof data1[key] === 'object' && typeof data2[key] === 'object') {
-          return {
+          const elem = {
             name: key,
             type: 'listOfChildren',
             children: iter(data1[key], data2[key]),
           };
+          return elem;
         }
 
         if (data1[key] === data2[key]) {
-          return {
+          const elem = {
             name: key,
             type: 'unchanged',
             valueOld: data1[key],
             valueNew: data2[key],
           };
+          return elem;
         }
 
-        return {
+        const elem = {
           name: key,
           type: 'changed',
           valueOld: data1[key],
           valueNew: data2[key],
         };
+        return elem;
       }
 
       if (!_.has(data1, key)) {
-        return {
+        const elem = {
           name: key,
           type: 'added',
           valueNew: data2[key],
         };
+        return elem;
       }
 
-      return {
+      const elem = {
         name: key,
         type: 'removed',
         valueOld: data1[key],
       };
+      return elem;
     });
 
     return childrenList;
