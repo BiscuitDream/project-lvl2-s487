@@ -15,17 +15,6 @@ const customStringify = (value, depth) => {
 const nestedFormatter = (ast) => {
   const iter = (elems, depth = 1) => elems.map((elem) => {
     const spaces = getSpaces(depth);
-
-    // if (elem.type === 'listOfChildren') {
-    //   return `${spaces}  ${elem.name}: {\n${iter(elem.children, depth + 1)}\n${spaces}  }`;
-    // }
-
-    // if (elem instanceof Array) {
-    //   const strings = elem.map(el => iter(el, depth));
-    //   return _.flatten(strings).join('\n');
-    // }
-
-    // Первый вариант свича добавлен
     switch (elem.type) {
       case 'listOfChildren':
         return `${spaces}  ${elem.name}: {\n${_.flatten(iter(elem.children, depth + 1)).join('\n')}\n${spaces}  }`;
@@ -42,12 +31,6 @@ const nestedFormatter = (ast) => {
     }
   });
 
-  // return `{\n${iter(ast)}\n}`;
-
-  // так как дерево - список, возможно стоит корневому элементу дать имя и свойство со списком детей
-  // Появляется повторение, похоже все-таки дерево надо перестроить
-  // В plainFormatter аналогично
-  // return `{\n${_.flatten(ast.map(elem => iter(elem))).join('\n')}\n}`;
   return `{\n${_.flatten(iter(ast)).join('\n')}\n}`;
 };
 

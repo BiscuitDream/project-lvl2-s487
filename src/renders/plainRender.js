@@ -15,26 +15,11 @@ const getValue = (value) => {
 
 const plainFormatter = (ast) => {
   const iter = (elems, names) => elems.filter(el => el.type !== 'unchanged').map((elem) => {
-    // if (elem.type === 'listOfChildren') {
-    //   return iter(elem.children, [...names, elem.name]);
-    // }
-
-    // if (elem instanceof Array) {
-    //   const strings = elem
-    //     .filter(el => el.type !== 'unchanged')
-    //     .map(el => iter(el, names));
-
-    //   return strings.join('\n');
-    // }
 
     const preName = getPreName(names);
 
     switch (elem.type) {
       case 'listOfChildren':
-        // return elem.children
-        //   .filter(el => el.type !== 'unchanged')
-        //   .map(el => iter(el, [...names, elem.name]))
-        //   .join('\n');
         return iter(elem.children, [...names, elem.name]).join('\n');
       case 'unchanged':
         return `Property '${preName}${elem.name}' was added with value: ${getValue(elem.valueNew)}`;
@@ -49,11 +34,6 @@ const plainFormatter = (ast) => {
     }
   });
 
-  // return iter(ast, []);
-  // return ast
-  //   .filter(el => el.type !== 'unchanged')
-  //   .map(el => iter(el, []))
-  //   .join('\n');
   return iter(ast, []).join('\n');
 };
 
