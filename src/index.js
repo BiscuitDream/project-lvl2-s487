@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 import getParse from './parsers';
-import getFormatter from './renders';
+import getFormatter from './renderers';
 
 const buildAst = (file1Data, file2Data) => {
   const iter = (data1, data2) => {
